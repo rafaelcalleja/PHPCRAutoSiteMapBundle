@@ -1,0 +1,28 @@
+{
+    "name": "rc/phpcr-auto-site-map-bundle",
+    "type": "symfony-bundle",
+    "description": "auto generate site map from routing-extra-bundle routes",
+    "keywords": ["sitemap", "auto", "generate", "presta", "sitemap" , "PHPCR", "bundle"],
+    "homepage": "https://github.com/rafaelcalleja/PHPCRAutoSiteMapBundle.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rafael Calleja",
+            "email": "rafa.calleja@d-noise.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+	"jackalope/jackalope-doctrine-dbal": "dev-master",
+        "presta/sitemap-bundle": "dev-master",
+	"rc/phpcr-route-events-bundle" : "dev-master"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": ">=2.1,<2.2-dev"
+    },
+    "autoload": {
+        "psr-0": { "RC\\PHPCRAutoSiteMapBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "RC/PHPCRAutoSiteMapBundle"
+}
