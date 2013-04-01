@@ -1,6 +1,6 @@
 <?php
 
-namespace RC\PHPCRMenuNodeFromRoutesBundle\Tests\Controller;
+namespace RC\PHPCRAutoSiteMapBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

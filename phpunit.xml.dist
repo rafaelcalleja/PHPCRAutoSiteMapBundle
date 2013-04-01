@@ -13,7 +13,7 @@
 >
 
     <testsuites>
-        <testsuite name="PHPCRMenuNodeFromRoutesBundle Test Suite">
+        <testsuite name="PHPCRAutoSiteMapBundle Test Suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
