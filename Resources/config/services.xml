@@ -17,7 +17,9 @@
 		 	<tag name="kernel.event_listener" event="rc.route.post.remove" method="onRouteRemoved" />
 		 	<argument type="service" id="event_dispatcher" />
 		 	<argument>%presta_sitemap.dumper_base_url%</argument>
-		 	<argument type="service" id="router.default" />
+		 	<argument type="service" id="presta_sitemap.generator" />
+		 	<argument type="service" id="presta_sitemap.dumper" />
+		 	
 		</service>
 		
 		<!-- <service id="rc.sitemap.listener" class="RC\PHPCRAutoSiteMapBundle\Events\SitemapListener">

@@ -14,8 +14,8 @@ class SitemapListener implements SitemapListenerInterface {
 	}
 	
 
-	public function populateSitemap(SitemapPopulateEvent $event)
-	{
+	public function populateSitemap(SitemapPopulateEvent $event){
+		var_dump('populating', $event->getSection());
 	}
 
 }
