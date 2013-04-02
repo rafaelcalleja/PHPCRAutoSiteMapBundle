@@ -42,7 +42,7 @@ class RouteListener  {
 			$newUrlset = new UrlConcrete($newurl, new \DateTime(), UrlConcrete::CHANGEFREQ_HOURLY, 1 );
 
 			$registered = UrlSetHelper::loadCurrentUrlSets($this->targetdir.$newlabel.'.xml');
-			$registered = UrlSetHelper::{$this->method_action}($registered, $newUrlset);
+			$registered = UrlSetHelper::$this->method_action($registered, $newUrlset);
 			foreach($registered as $urlsets){
 				$event->getGenerator()->addUrl($urlsets, $newlabel);
 			}
