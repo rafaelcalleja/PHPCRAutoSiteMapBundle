@@ -4,17 +4,25 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
-        <parameter key="rcphpcr_auto_site_map.example.class">RC\PHPCRAutoSiteMapBundle\Example</parameter>
+        <parameter key="rc.sitemap.listener.class">RC\PHPCRAutoSiteMapBundle\Events\RouteListener</parameter>
+        <parameter key="presta_sitemap.generator.class">RC\PHPCRAutoSiteMapBundle\Service\PhpcrGenerator</parameter>
     </parameters>
-
-    <services>
-        <service id="rcphpcr_auto_site_map.example" class="%rcphpcr_auto_site_map.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
-        </service>
-    </services>
-    -->
+    
+	<services>
+		
+		<service id="rc.sitemap.listener" class="%rc.sitemap.listener.class%">
+		 	<tag name="kernel.event_listener" event="rc.route.added" method="onRouteAdded" />
+		 	<tag name="kernel.event_listener" event="rc.route.post.move" method="onRouteMoved" />
+		 	<tag name="kernel.event_listener" event="rc.route.post.remove" method="onRouteRemoved" />
+		 	<argument type="service" id="event_dispatcher" />
+		 	<argument>%presta_sitemap.dumper_base_url%</argument>
+		 	<argument type="service" id="router.default" />
+		</service>
+		
+		<!-- <service id="rc.sitemap.listener" class="RC\PHPCRAutoSiteMapBundle\Events\SitemapListener">
+		 	<tag name="presta.sitemap.listener" />
+		</service> -->
+		
+	</services>
 </container>
