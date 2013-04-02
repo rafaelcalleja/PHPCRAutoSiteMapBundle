@@ -16,7 +16,7 @@ class RouteListener  {
 	protected $dispatcher, $prefix, $generator, $dumper;
 
 	protected $label, $url, $targetdir, $method_action;
-	protected static $oids = array();
+	protected $oids = array();
 	
 	
 	
@@ -37,8 +37,8 @@ class RouteListener  {
 		$this->dispatcher->addListener(SitemapPopulateEvent::onSitemapPopulate,
 		function(SitemapPopulateEvent $event) use ($generator){
 
-			$newurl = self::$oids[$event->getSection()]['url'];
-			$newlabel = self::$oids[$event->getSection()]['label'];
+			$newurl = $this->oids[$event->getSection()]['url'];
+			$newlabel = $this->oids[$event->getSection()]['label'];
 			$newUrlset = new UrlConcrete($newurl, new \DateTime(), UrlConcrete::CHANGEFREQ_HOURLY, 1 );
 
 			$registered = UrlSetHelper::loadCurrentUrlSets($this->targetdir.$newlabel.'.xml');
@@ -57,7 +57,7 @@ class RouteListener  {
 		$this->label  =  ( isset($sections[1]) && !empty($sections[1])) ? $sections[1] : 'default';
 		$this->url = $this->prefix . substr($event->getPath(), 1);
 		$id = $event->getPath();
-		self::$oids[$id] = array('url' => $this->url, 'label' => $this->label);
+		$this->oids[$id] = array('url' => $this->url, 'label' => $this->label);
 		$filenames = $this->dumper->dump($this->targetdir, $id );
 	}
 
