@@ -10,14 +10,14 @@ use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Presta\SitemapBundle\Service\SitemapListenerInterface;
+use RC\PHPCRAutoSiteMapBundle\Listener\SitemapListener;
 
 class RouteListener  {
 
 	protected $dispatcher, $prefix, $generator, $dumper;
 
-	protected $label, $url, $targetdir, $method_action;
-	protected $oids = array();
-	
+	protected $label, $url, $targetdir, $method_action, $listener;
+		
 	
 	
 	public function __construct($dispatcher, $prefix, $generator, $dumper) {
@@ -27,37 +27,19 @@ class RouteListener  {
 		$this->generator = $generator;
 		$this->dumper = $dumper;
 		$this->targetdir = __DIR__.'/../../../../../../web/';
-		$this->loadListernerClosure();
-		
+		$this->listener = new SitemapListener($this->targetdir);
+		$this->dispatcher->addListener(SitemapPopulateEvent::onSitemapPopulate, array($this->listener, 'populateSitemap'));
 		
 	}
 	
-	private function loadListernerClosure(){
-		$generator = $this->generator;
-		$this->dispatcher->addListener(SitemapPopulateEvent::onSitemapPopulate,
-		function(SitemapPopulateEvent $event) use ($generator){
-
-			$newurl = $this->oids[$event->getSection()]['url'];
-			$newlabel = $this->oids[$event->getSection()]['label'];
-			$newUrlset = new UrlConcrete($newurl, new \DateTime(), UrlConcrete::CHANGEFREQ_HOURLY, 1 );
-
-			$registered = UrlSetHelper::loadCurrentUrlSets($this->targetdir.$newlabel.'.xml');
-			$registered = UrlSetHelper::$this->method_action($registered, $newUrlset);
-			foreach($registered as $urlsets){
-				$event->getGenerator()->addUrl($urlsets, $newlabel);
-			}
-
-
-		});
-	}
-
 	public function onRouteAdded(RouteDataEvent $event) {
+		$this->listener->setMethod('addUrlTo');
 		$this->method_action = 'addUrlTo';
 		$sections = explode('/', $event->getPath());
 		$this->label  =  ( isset($sections[1]) && !empty($sections[1])) ? $sections[1] : 'default';
 		$this->url = $this->prefix . substr($event->getPath(), 1);
 		$id = $event->getPath();
-		$this->oids[$id] = array('url' => $this->url, 'label' => $this->label);
+		$this->listener->setOids(array($id => array('url' => $this->url, 'label' => $this->label)));
 		$filenames = $this->dumper->dump($this->targetdir, $id );
 	}
 
